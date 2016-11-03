@@ -15,25 +15,10 @@ uint16_t cnt=0;
 void xbee_reciver(xbee_t *xbee){
 	int tam=xbee->buf[1] | xbee->buf[2];
 	int i,sum=0;
-<<<<<<< HEAD
 		xbee->type=xbee->buf[3];
 		xbee_get_address(xbee);
 
 
-=======
-	for(i=3;i<tam+3;i++){
-		sum+=xbee->buf[i];
-		//printf("0x%02X ",data[i]);
-		}
-	sum&=0xFF;
-	sum=0xFF-sum;
-	//printf("checksum: 0x%02X calc:0x%02X",data[tam+3],sum);
-	if(xbee->buf[tam+3]==sum){
-		xbee->type=xbee->buf[3];
-		xbee_get_address(xbee);
-	}
-	else xbee->type=-1;
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 
 }
 void xbee_get_address(xbee_t *xbee){
@@ -89,11 +74,7 @@ void xbee_Send(xbee_t *xbee){
 	//printf("size=%d\r\n",xbee->size+4);
 	for(i=0;i<xbee->size+4;i++){
 		Delay_ms(1);
-<<<<<<< HEAD
 		USART_SendData(USART2,xbee->payload[i]);
-=======
-		USART_SendData(USART1,xbee->payload[i]);
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 		//printf("%02x ",xbee->payload[i]);
 		}
 	//printf("\n");
@@ -106,21 +87,13 @@ void xbee_SendData(xbee_t *xbee,uint8_t *address,uint8_t *data,uint8_t size){
 	//printf("teste3\r\n");
 	xbee_packet(xbee);
 	//printf("teste4\r\n");
-<<<<<<< HEAD
 	usart_send_n(USART2,xbee->payload,xbee->size+4);
-=======
-	usart_send_n(USART1,xbee->payload,xbee->size+4);
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 	//xbee_Send(xbee);
 	//printf("teste5\r\n");
 }
 void xbee_usart(xbee_t *xbee,uint8_t data){
 	uint8_t flag_c=0,i;
-<<<<<<< HEAD
 	uint16_t sum;
-=======
-	uint8_t sum;
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 	if(xbee->start){
 		xbee->buf[cnt]=data;
 		//if(flag_c){

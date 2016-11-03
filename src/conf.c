@@ -177,7 +177,6 @@ void usart1_init(){
 
     /* Enable USART */
     USART_Cmd(USART1, ENABLE);
-<<<<<<< HEAD
     //NVIC_InitStructure.NVIC_IRQChannel = 37;//USART1_IRQn;
    	// NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
    	// NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
@@ -187,17 +186,6 @@ void usart1_init(){
     setvbuf(stdin, NULL, _IONBF, 0);
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
-=======
-    NVIC_InitStructure.NVIC_IRQChannel = 37;//USART1_IRQn;
-   	 NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-   	 NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-   	 NVIC_Init(&NVIC_InitStructure);
-   	 USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
-
-    //setvbuf(stdin, NULL, _IONBF, 0);
-    //setvbuf(stdout, NULL, _IONBF, 0);
-    //setvbuf(stderr, NULL, _IONBF, 0);
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 }
 void usart2_init(){
     USART_InitTypeDef USART_InitStructure;
@@ -236,15 +224,9 @@ void usart2_init(){
     /* Enable USART */
     USART_Cmd(USART2, ENABLE);
 
-<<<<<<< HEAD
     //setvbuf(stdin, NULL, _IONBF, 0);
     //setvbuf(stdout, NULL, _IONBF, 0);
     //setvbuf(stderr, NULL, _IONBF, 0);
-=======
-    setvbuf(stdin, NULL, _IONBF, 0);
-    setvbuf(stdout, NULL, _IONBF, 0);
-    setvbuf(stderr, NULL, _IONBF, 0);
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 }
 
 

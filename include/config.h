@@ -13,13 +13,13 @@ typedef struct{
 	Func_aci_T aci[4];
 }Func_T;
 
+
 typedef union{
 	float val;
 	struct{
 		char b[4];
     	}byte;
 }floatbyte_T;
-
 typedef struct{
 	uint32_t pin;
 	uint8_t estado;
@@ -35,6 +35,7 @@ typedef struct{
 	uint8_t qtd;
 	var_T var[5];
 }vart_T;
+
 
 typedef union{
 	uint16_t val;
@@ -54,14 +55,6 @@ typedef struct{
 	uint8_t n[5];
 	uint8_t medias[5];
 }AnalogVar_T;
-
-typedef union{
-	uint16_t val;
-	struct{
-		char b1;
-		char b2;
-	}byte;
-}uint16byte_T;
 
 typedef struct {
 	AnalogVar_T var;

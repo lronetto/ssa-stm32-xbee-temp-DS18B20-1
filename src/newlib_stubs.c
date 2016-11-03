@@ -14,7 +14,6 @@
 
 
 #ifndef STDOUT_USART
-<<<<<<< HEAD
 #define STDOUT_USART 1
 #endif
 
@@ -24,17 +23,6 @@
 
 #ifndef STDIN_USART
 #define STDIN_USART 1
-=======
-#define STDOUT_USART 3
-#endif
-
-#ifndef STDERR_USART
-#define STDERR_USART 3
-#endif
-
-#ifndef STDIN_USART
-#define STDIN_USART 3
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 #endif
 
 //#undef errno
