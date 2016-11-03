@@ -9,8 +9,11 @@
 #define INCLUDE_FUNC_H_
 #include "stm32f10x.h"
 
+
 #define FUNC_LOCAL	0
 #define FUNC_REMOTE	1
+
+
 
 enum{
 	IN0=0,
@@ -37,8 +40,6 @@ typedef struct{
 typedef struct{
 	GPIO_T in[4],out[5];
 }Inout_T;
-
-
 
 int func_GPIO_T(GPIO_T gpio);
 

@@ -128,27 +128,44 @@ void Ds18b20_ConvertTemperature(ds18b20_TypeDef ds)
 int i;
 
 Ds18b20_Reset(ds); // Perform Master Reset of OneWire Bus
+<<<<<<< HEAD
 Ds18b20_WriteByte(ds, 0x55);
 for(i=0;i<8;i++) Ds18b20_WriteByte(ds, ds.addr[i]);
 //Ds18b20_WriteByte(ds, 0xCC);	 // skip ROM
+=======
+//Ds18b20_WriteByte(ds, 0x55);
+//for(i=0;i<8;i++) Ds18b20_WriteByte(ds, ds.addr[i]);
+Ds18b20_WriteByte(ds, 0xCC);	 // skip ROM
+>>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 Ds18b20_WriteByte(ds, 0x44);	 // convert temperature
 //Ds18b20_Reset(ds);	 // Perform Master Reset of OneWire Bus
 }
 
 void Ds18b20_ReadTemperature(ds18b20_TypeDef *ds)
 {
+<<<<<<< HEAD
 uint8_t ls,ms;
+=======
+uint16_t ls,ms;
+>>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 uint16_t temp;
 int sig=0;
 int i;
 Ds18b20_Reset(*ds);
+<<<<<<< HEAD
 //Ds18b20_WriteByte(*ds, 0xCC);	 // skip ROM
 Ds18b20_WriteByte(*ds, 0x55);
 for(i=0;i<8;i++) Ds18b20_WriteByte(*ds, (*ds).addr[i]);
+=======
+Ds18b20_WriteByte(*ds, 0xCC);	 // skip ROM
+//Ds18b20_WriteByte(*ds, 0x55);
+//for(i=0;i<8;i++) Ds18b20_WriteByte(*ds, (*ds).addr[i]);
+>>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 Ds18b20_WriteByte(*ds, 0xBE);	 // read scratch pad
 
 ls=Ds18b20_ReadByte(*ds);
 ms=Ds18b20_ReadByte(*ds);
+<<<<<<< HEAD
 //printf("\r\n\r\n1LS 0x%02X MS 0x%02X\r\n",ls,ms);
 
 temp= ls | ms<<8;
@@ -158,6 +175,15 @@ temp= ls | ms<<8;
 //	printf(" MS1 0x%X ",ms);
 //}
 //printf("temp=%04X %2.2f\r\n",temp,temp/16.0);
+=======
+//printf("LS 0x%X MS 0x%X",ls,ms);
+if(ms & 0xF0){
+	ms&=~(ms & 0xFF);
+	sig=1;
+//	printf(" MS1 0x%X ",ms);
+}
+temp= ls | ms<<8;
+>>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 if(temp!=0xFF){
 	if(!sig) (*ds).temp=(float)temp/16.0;
 	else  (*ds).temp=(float)temp/-16.0;
@@ -173,8 +199,13 @@ void Ds18b20_ReadROM(ds18b20_TypeDef *ds){
 	Ds18b20_Reset(*ds);
 	Ds18b20_WriteByte(*ds, 0x33);
 	for(i=0;i<8;i++){
+<<<<<<< HEAD
 		//ds->addr[i]=Ds18b20_ReadByte(*ds);
 		printf("0x%02X ",ds->addr[i]);
+=======
+		ds->addr[i]=Ds18b20_ReadByte(*ds);
+		//printf("0x%X ",Ds18b20_ReadByte(ds));
+>>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 	}
 
 }
