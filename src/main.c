@@ -11,11 +11,7 @@
 #include "ssa.h"
 #include "media.h"
 
-<<<<<<< HEAD
 ds18b20_TypeDef ds1,ds2;
-=======
-ds18b20_TypeDef ds;
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 void func_process();
 void xbee_process();
 
@@ -24,10 +20,7 @@ GPIO_InitTypeDef GPIO_InitStructure;
 Inout_T	inout;
 Func_T func;
 xbee_t xbee;
-<<<<<<< HEAD
 Media_T mtemp[2];
-=======
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 EE_t eep;
 AnalogVar_T var;
 AnalogVar_T var_aux;
@@ -36,11 +29,7 @@ uint8_t payload[100];
 
 uint8_t	xbee_broadcast[]={0,0,0,0,0,0,0xFF,0xFF};
 uint8_t xbee_coord[8];
-<<<<<<< HEAD
 
-=======
-Media_T temp1;
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 uint8_t flag_in[]={0,0,0,0};
 int i,j;
 int main(){
@@ -48,7 +37,6 @@ int main(){
 
 	Delay_Init();
 	usart1_init();
-<<<<<<< HEAD
 	//EXTI_config();
 	usart2_init();
 	//usart3_init();
@@ -79,24 +67,6 @@ int main(){
 	memset(eep.var.temposum,0,sizeof(eep.var.temposum));
 	inout.out[0].GPIO=GPIOC;
 	inout.out[0].pin=GPIO_Pin_13;
-=======
-	EXTI_config();
-	//usart2_init();
-	usart3_init();
-	//ADC1_Initm();
-	uint8_t func_addr[8]={0x00,0x13,0xA2,0x00,0x40,0xE5,0xF2,0x44};
-
-	//temp
-	eep.var.type[0]=1;
-	//2 minutos
-	eep.var.tempo[0]=60;
-	eep.var.temposum[0]=0;
-	eep.var.medias[0]=3;
-	eep.var.qtd=1;
-
-	inout.out[0].GPIO=GPIOA;
-	inout.out[0].pin=GPIO_Pin_0;
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 
 	inout.out[1].GPIO=GPIOA;
 	inout.out[1].pin=GPIO_Pin_1;
@@ -124,16 +94,11 @@ int main(){
 	eep.func.aci[2].act=1;
 
 	eep.func.aci[3].type=FUNC_REMOTE;
-<<<<<<< HEAD
 	eep.func.aci[3].out=4;
-=======
-	eep.func.aci[3].out=0;
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 	eep.func.aci[3].act=1;
 	memcpy(eep.func.aci[3].dest_addr,func_addr,8);
 	//func.aci[3].dest_addr=func_addr;
 
-<<<<<<< HEAD
 
 	//SysTick_Config(SystemCoreClock / 1000);
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOB, ENABLE);
@@ -210,98 +175,15 @@ int main(){
 					}
 					start2=TIM2->CNT;
 				}
-=======
-	//EE_Write(eep);
-	//EE_Write(eep);
-
-	EE_Read(&eep);
-
-	//SysTick_Config(SystemCoreClock / 1000);
-	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB, ENABLE);
-	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 |  GPIO_Pin_3 | GPIO_Pin_4;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-	uint8_t addr[8]={0x28,0xff,0x90,0x5e,0x90,0x15,0x3,0xeb};
-	Ds18b20_Init(&ds,GPIOB,GPIO_Pin_5,addr);
-	Ds18b20_ReadROM(&ds);
-	//Ds18b20_ConvertTemperature(ds);
-	//Ds18b20_ReadTemperature(&ds);
-	media_Init(&temp1,eep.var.medias[0]);
-	payload[0]=SSA_F_CORD_ADDR;
-	printf("ola mundo\r\n");
-	xbee_SendData(&xbee,xbee_broadcast,payload,1);
-
-	start=TIM2->CNT;
-	start1=TIM2->CNT;
-	start2=TIM2->CNT;
-	while(1){
-		if((TIM2->CNT-start1)>1000){
-			Ds18b20_ConvertTemperature(ds);
-			Ds18b20_ReadTemperature(&ds);
-			eep.var.ana[0].val=media_process(&temp1,ds.temp);
-			//printf("temp=%2.2f\r\n",eep.var.ana[0].val);
-			start1=TIM2->CNT;
-		}
-		if((TIM2->CNT-start2)>1000){
-			var_aux.qtd=0;
-			for(i=0;i<eep.var.qtd;i++){
-				if(eep.var.temposum[i]==eep.var.tempo[i]){
-
-					var_aux.type[var_aux.qtd]=eep.var.type[i];
-					var_aux.tempo[var_aux.qtd]=eep.var.tempo[i];
-					var_aux.ana[var_aux.qtd]=eep.var.ana[i];
-					var_aux.medias[var_aux.qtd]=eep.var.medias[i];
-					var_aux.n[var_aux.qtd]=i;
-					var_aux.qtd++;
-					eep.var.temposum[i]=0;
-					}
-				else
-					eep.var.temposum[i]++;
-			}
-			if(var_aux.qtd>0){
-				payload[0]=SSA_F_ANALOG;
-				payload[1]=var_aux.qtd;
-				for(i=0;i<var_aux.qtd;i++){
-					//id da variavel no dispositivo
-					payload[2+i*8]=var_aux.n[i];
-					payload[3+i*8]=var_aux.tempo[i];
-					payload[4+i*8]=var_aux.type[i];
-					payload[5+i*8]=var_aux.medias[i];
-					for(j=0;j<4;j++)
-						payload[6+i*8+j]=var_aux.ana[i].byte.b[j];
-					}
-
-				xbee_SendData(&xbee,xbee_coord,payload,2+var_aux.qtd*8+1);
-				printf("send %2.2f\r\n",eep.var.ana[0].val);
-
-			}
-			start2=TIM2->CNT;
-		}
-		if((TIM2->CNT-start)>500){
-			if(GPIOA->ODR & GPIO_Pin_0) GPIOA->ODR&=~GPIO_Pin_0;
-			else GPIOA->ODR|=GPIO_Pin_0;
-			start=TIM2->CNT;
-		}
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 		xbee_process();
 		func_process();
 		}
 	}
-<<<<<<< HEAD
 void USART2_IRQHandler(void){
 	if(USART_GetFlagStatus(USART2,USART_IT_RXNE)){
 	xbee_usart(&xbee,USART_ReceiveData(USART2));
 	}
 	USART_ClearITPendingBit(USART2,USART_IT_RXNE);
-=======
-void USART1_IRQHandler(void){
-	if(USART_GetFlagStatus(USART1,USART_IT_RXNE)){
-	xbee_usart(&xbee,USART_ReceiveData(USART1));
-	}
-	USART_ClearITPendingBit(USART1,USART_IT_RXNE);
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 }
 void EXTI9_5_IRQHandler(void){
 	if(EXTI_GetITStatus(EXTI_Line9) != RESET){
@@ -326,7 +208,6 @@ void func_process(){
 		if(flag_in[i]){
 			printf("in %d\r\n",i);
 			//funcao ativa?
-<<<<<<< HEAD
 			if(eep.func.aci[i].act){
 				//é funcao local?
 				switch(func.aci[i].type){
@@ -335,16 +216,6 @@ void func_process(){
 						payload[0]=SSA_F_OUTP;
 						payload[1]=eep.func.aci[i].out;
 						xbee_SendData(&xbee,xbee_coord,payload,2);
-=======
-			if(func.aci[i].act){
-				//é funcao local?
-				switch(eep.func.aci[i].type){
-					case FUNC_LOCAL:
-						payload[2]=func_GPIO_T((inout.out[func.aci[i].out]));
-						payload[0]=SSA_F_OUTP;
-						payload[1]=eep.func.aci[i].out;
-						xbee_SendData(&xbee,xbee_coord,payload,3);
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 						printf("teste\r\n");
 						break;
 					case FUNC_REMOTE:
@@ -352,10 +223,7 @@ void func_process(){
 						payload[1]=eep.func.aci[i].out;
 						xbee_SendData(&xbee,eep.func.aci[i].dest_addr,payload,2);
 						break;
-<<<<<<< HEAD
 
-=======
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 					}
 				}
 			flag_in[i]=0;
@@ -366,10 +234,7 @@ void xbee_process(void){
 
 	if(!xbee.start){
 		xbee_reciver(&xbee);
-<<<<<<< HEAD
 
-=======
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 		printf("rec: ");
 		for(i=0;i<xbee.buf[2]+4;i++)
 			printf("%02X ",xbee.buf[i]);
@@ -377,11 +242,7 @@ void xbee_process(void){
 		switch(xbee.type){
 			case XBEE_STATUS:
 				if(!xbee.buf[XBEE_STATUS_SUCESS]){
-<<<<<<< HEAD
 					//printf("success\r\n");
-=======
-					printf("success\r\n");
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 					}
 				break;
 			case XBEE_RECEIVE_PACKET:
@@ -401,11 +262,7 @@ void xbee_process(void){
 						payload[1]=xbee.buf[XBEE_PAYLOAD_OFFSET+1];
 						printf("out=%d\r\n",payload[1]);
 						payload[2]=func_GPIO_T((inout.out[xbee.buf[XBEE_PAYLOAD_OFFSET+1]]));
-<<<<<<< HEAD
 						xbee_SendData(&xbee,xbee.addr_cord,payload,3);
-=======
-						xbee_SendData(&xbee,xbee.source_Address,payload,3);
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 						break;
 					case SSA_F_FUNC:
 						eep.func.aci[xbee.buf[XBEE_PAYLOAD_OFFSET+2]].act=1;
@@ -416,39 +273,22 @@ void xbee_process(void){
 
 						break;
 					case SSA_F_ANALOG_TEMPO:
-<<<<<<< HEAD
 						printf("teste\r\n");
 						//printf("ind=%d  tempo=%d\r\n",xbee.buf[XBEE_PAYLOAD_OFFSET+2+0*2],xbee.buf[XBEE_PAYLOAD_OFFSET+3+0*2]);
-=======
-						//printf("teste tempo=%d\r\n",xbee.buf[XBEE_PAYLOAD_OFFSET+3+i*2]);
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 						for(i=0;i<xbee.buf[XBEE_PAYLOAD_OFFSET+1];i++){
 							//tempo
 							eep.var.tempo[xbee.buf[XBEE_PAYLOAD_OFFSET+2+i*3]]=xbee.buf[XBEE_PAYLOAD_OFFSET+3+i*3];
 							//media
 							eep.var.medias[xbee.buf[XBEE_PAYLOAD_OFFSET+2+i*3]]=xbee.buf[XBEE_PAYLOAD_OFFSET+4+i*3];
-<<<<<<< HEAD
 							media_Init(&mtemp[xbee.buf[XBEE_PAYLOAD_OFFSET+2+i*3]],eep.var.medias[xbee.buf[XBEE_PAYLOAD_OFFSET+2+i*3]]);
 							}
 						memset(eep.var.temposum,0,sizeof(eep.var.temposum));
 						EE_Write(eep);
 						break;
-=======
-							media_Init(&temp1,eep.var.medias[xbee.buf[XBEE_PAYLOAD_OFFSET+2+i*3]]);
-							}
-						memset(eep.var.temposum,0,sizeof(eep.var.temposum));
-
-						EE_Write(eep);
-						break;
-
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
 					}
 				break;
 			}
 		xbee.start=1;
 		}
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> 121759d14967f77fcd5ccc583bb7c81a86b42bbb
